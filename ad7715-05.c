@@ -26,9 +26,9 @@ void ad7715_init() {
 	
 	PORTB |= (1<<Chip_select);
 
-	Write_to_AD7715_register(0x10); /* Пишем в коммуникационный регистр: установить коэф. усиления 1; выйти из спящего режима и ожидать записи в регистр настроек*/ 
+	Write_to_AD7715_register(0x10); /*Write to communication register: set gain 1; exit the sleep mode and wait for writing to the settings register*/ 
 
-	Write_to_AD7715_register(0x66); /*Пишем в регистр настроек: выполнить самокалибровку (MD1=0,MD0=1); частота кварца 2.4576 МГц; частота выдачи результата 50 Гц; днополярный режим работы; буфер включен; FSYNC фильтр выключен*/
+	Write_to_AD7715_register(0x66); /*Write to settings register: perform self-calibration (MD1 = 0, MD0 = 1); crystal frequency is 2.4576 MHz; result frequency is 50 Hz; unipolar operation mode; buffer is on; FSYNC filter is off*/
 	
 	while(!DRDY);
 }
@@ -77,8 +77,8 @@ int main(void) {
 
 	ad7715_init();
 
-   	 while(1) {
-		Write_to_AD7715_register(0x38); /*Пишем в коммуникационный регистр, что следующая операция будет считывание 16 бит из регистра Data*/
+   	while(1) {
+		Write_to_AD7715_register(0x38); /*Write to communication register: the next operation will be reading 16 bits of result*/
 		ADC_result =  Read_AD7715_register();
 
 	}
